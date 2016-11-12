@@ -1,0 +1,245 @@
+<% content_for :head do %>
+
+<title>
+  <%= @campaign.campaign_name %>
+</title>
+<meta property="og:description" content="<%= @campaign.fb_description %>" />
+<% end %>
+
+
+<body>
+
+  <div class="container" style="padding-bottom: 0%;padding-top: 4%">
+    <div class="row">
+
+      <div class="col-lg-1">
+      </div>
+      <div class="col-lg-5">
+        <h2 >
+          Details
+        </h2>
+        <hr>
+        <div class="table-responsive">
+          <center>
+            <table class="table table-bordered">
+              <tr>                          
+                <th>
+                 Campaign
+               </th>
+               <td>
+                 <%= @campaign.campaign_name %> 
+               </td>
+               <tr>
+                <th>
+                 Campaign URL
+               </th>
+               <td>
+                 <%= link_to @campaign.campaign_url, @campaign.campaign_url, id: "campaign_url", target: "_blank" %>
+               </td>
+               <tr>
+                <th>
+                 <% if Time.now < @campaign.expiration_date %>
+                 Expires
+                 <% else %>
+                 Expired
+                 <% end %>
+               </th>
+               <td>
+                 <% if Time.now < @campaign.expiration_date %>
+                 <div class="text-success">
+                  <%= @campaign_expiration_display %>
+                  
+                </div>
+                <% else %>
+                <div class="text-danger">
+                  <%= @campaign_expiration_display %>
+                </div>
+                <% end %>
+              </td>
+              <tr>
+                <th>
+                 Description 
+               </th>
+               <td>
+                 <%= @campaign.description %> 
+               </td>
+               <tr>
+                <th>
+                 Promo Code 
+               </th>
+               <td>
+                 <%= @campaign.promo_code %>
+               </td>
+               <tr>
+                <th>
+                 Message 1 
+               </th>
+               <td>
+                 <%= @campaign.alert_one %> 
+               </td>
+               <tr>
+                <th>
+                 Message 1 Send Date 
+               </th>
+               <td> 
+                <%= @campaign_send_date_one_display %> 
+              </td>
+              <tr>
+                <th> 
+                  Message 2
+                </th>
+                <td>
+                 <%= @campaign.alert_two %> 
+               </td>
+               <tr>
+                <th>
+                 Message 2 Send Date 
+               </th>
+               <td>
+                 <%= @campaign_send_date_two_display %> 
+               </td>
+               <tr>
+                <th>
+                 Facebook Description 
+               </th>
+               <td>
+                 <%= @campaign.fb_description %> 
+               </td>
+               
+               <tr>
+                <th>
+                  Facebook Image
+                </th>
+                <td>
+                  <% if @campaign.fb_image_file_name? %>
+                  <%= image_tag @campaign.fb_image.url(:medium), :alt => 'image is broken' %>
+                  <% end %>
+                </td>
+                
+              </table>
+            </center>
+          </div>
+        </div>
+        <div class="col-lg-1">
+        </div>
+        
+
+
+
+        <div class="col-lg-5">
+         <h2>
+          Resources 
+          <!-- initialize JS for tooltip popover stying -->
+          <script type="text/javascript">
+          $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+          })
+          </script>
+          <span
+          data-toggle="tooltip" data-placement="bottom" title="Users that click on these links/buttons will be able to add deals to their Pouch. These can be sent out in emails/texts, posted to social media, or displayed anywhere online." style="font-size:.66em">  
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+
+          </span>
+        </h2>
+        <hr>
+        
+        <h5>
+          Bitly URL:
+        </h5>
+        <textarea rows="1" cols="50">
+<%= @bitly_url.short_url %>
+       </textarea>
+       <br>
+       <br>
+       
+       <h5>
+        HTML Image Button:
+      </h5>
+      <div style="padding-bottom: 1%">
+      <a href=<%= @pouch_url %> target="_blank">
+        <img border="0" style="border-radius:4px" alt="Save this deal with Pouch" src="https://s3-us-west-1.amazonaws.com/pouch-images-1/pouch-logos/PNG/pouch-email-button.png" width="150"></a>
+        </div>
+        
+        <textarea rows="4" cols="50">
+<a href=<%= @pouch_url %> target="_blank">
+<img border="0" style="border-radius:4px" alt="Save this deal with Pouch" src="https://s3-us-west-1.amazonaws.com/pouch-images-1/pouch-logos/PNG/pouch-email-button.png" width="150">
+</a>
+        </textarea>
+        <br>
+        
+        <br>
+        <h5>
+          HTML Text Button:
+        </h5>
+        <div style="padding-bottom: 1%">
+<!--[if mso]>
+  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href=<%= @pouch_url %> style="height:50px;v-text-anchor:middle;width:150px;" arcsize="10%" strokecolor="#D3D3D3" fillcolor="#D3D3D3">
+    <w:anchorlock/>
+    <center style="color:#000000;font-family:HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:26px;font-weight:normal;"> Pouch it!</center>
+  </v:roundrect>
+  <![endif]--><a href=<%= @pouch_url %> target="_blank"
+  style="background-color:#D3D3D3;border:1px solid #D3D3D3;border-radius:4px;color:#000000;display:inline-block;font-family:HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:26px;font-weight:normal;line-height:14px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;mso-hide:all;">
+  <br>
+  Pouch it!
+  <br>
+  <span style="line-height:31px">
+    <font style="font-family:HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;Margin-Top:3;Margin-Left:1;font-size:14px">
+      Save this deal for later
+    </font>
+  </span>
+</a>
+</div>
+
+
+<textarea rows="4" cols="50" >
+<div>
+<!--[if mso]>
+  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href=<%= @pouch_url %> style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" strokecolor="#D3D3D3" fillcolor="#D3D3D3">
+    <w:anchorlock/>
+    <center style="color:#000000;font-family:HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:26px;font-weight:normal;"> Pouch it!</center>
+  </v:roundrect>
+  <![endif]--><a href=<%= @pouch_url %> target="_blank"
+  style="background-color:#D3D3D3;border:1px solid #D3D3D3;border-radius:4px;color:#000000;display:inline-block;font-family:HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;font-size:26px;font-weight:normal;line-height:14px;text-align:center;text-decoration:none;width:150px;-webkit-text-size-adjust:none;mso-hide:all;">
+  <br>
+  Pouch it!
+  <br>
+  <span style="line-height:31px">
+    <font style="font-family:HelveticaNeue-Light, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;Margin-Top:3;Margin-Left:1;font-size:14px">
+      Save this deal for later
+    </font>
+  </span>
+</a>
+</div>
+</textarea>
+
+<br>
+<br> 
+<br>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-1">
+  </div>
+  <div class="col-lg-11">
+    <br>
+    <h2>
+        Campaign Tracking
+    </h2>
+    <hr>
+    <!-- Line Chart - Single Series -->
+	<!-- comment
+	<div class="col-xs-6">
+	-->
+	<%= line_chart @deals.group_by_day(:created_at).count, xtitle: "Date", ytitle: "Saved Deals" %>
+  </div>
+</div>
+
+
+
+</div>
+
+
+
+</body>
+</html>

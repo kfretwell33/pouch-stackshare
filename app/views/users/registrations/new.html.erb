@@ -1,0 +1,59 @@
+<% content_for :head do %>
+
+<title>Sign Up</title>
+<meta property="og:description" content="Sign Up" />
+<% end %>
+
+<div class="container"align="center" style="margin-top:2%">
+	<div class="col-sm-4">
+	</div>
+	<div class="col-sm-4">
+
+		<a href="/">
+			<img src="/assets/pouch-horizontal-9ef217972054514086c4f344e815e7567d0c8f4b8e1af9c84cfdfec9697b8c0f.png" width="66%" alt="Pouch logo">
+		</a>
+	</div>
+	<div class="col-sm-4">
+	</div>
+</div>
+<hr style="margin-top:2%">
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4">
+		</div>
+		<div class="col-sm-4" style="margin-top: 15px;">
+
+			<center>
+				<%= link_to image_tag("facebook-login.png", height: "55"), "/users/auth/facebook", id: "sign_in"%>
+			
+
+			<h6 style="margin-top:3%; margin-bottom:5%">or</h6>
+			</center>
+				<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+				<%= f.error_notification %>
+
+				<div class="form-inputs">
+					<%= f.input :email, required: true, label: false, autofocus: true, placeholder: "Email", error_html: {class: "text-danger"} %>
+
+
+					<%= f.input :password, required: true, placeholder: "Password", label: false, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), hint_html: {class: "small text-muted"}, error_html: {class: "text-danger"} %>
+
+
+					<%= f.input :password_confirmation, placeholder: "Password Confirmation", required: true, label: false, error_html: {class: "text-danger"} %>
+				</div>
+
+				<div class="form-actions">
+					<%= f.button :submit, "Sign up", class: "btn btn-secondary" %>
+				</div>
+				<% end %>
+				<br>
+				
+					Already have an Account? <%= link_to "Log in", new_user_session_path, id: "sign_in"%>
+
+			</div>
+			<div class="col-sm-3">
+			</div>
+		</div>
+	</div>
+</body>

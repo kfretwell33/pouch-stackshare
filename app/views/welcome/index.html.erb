@@ -1,0 +1,254 @@
+
+<% content_for :head do %>
+<title>Pouch | Never Forget A Deal</title>
+<meta property="og:description" content="Pouch" />
+<% end %>
+
+	<!-- if user is logged in -->
+	<% if current_user %>
+<body  style="background-color: #E0E0E0 ">
+	
+	<nav class="navbar navbar-light" style="background-color: #EDEDED;">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="navbar-header">
+					<a class="navbar-brand">
+
+					</a>
+
+					<div align="center" style="margin-left:75px">
+						<span style="margin-left:0%">
+						<%= link_to image_tag("pouch-horizontal.png", height: "35"), "/", id: "home_page" %>
+					</span>
+
+					<form class="form-inline pull-xs-right">
+						<ul class="nav navbar-nav">
+							<li class="nav-item pull-*-right active">
+								<%= link_to "Sign out", destroy_user_sessions_path, id: "sign_out", class: "nav-link" %>
+							</li>
+						</ul>
+					</form>
+					</div>
+				</div>
+			</div><!-- /.navbar-collapse -->
+		</div>
+	</nav>
+<span STYLE="font-family: 'Helvetica-Light'">
+	<div class="container" style="padding-bottom: 5%;">
+		<% if @data == [] %>
+			<div style="padding-top:6%">
+					<div class="jumbotron" style="padding-top:6%;padding-bottom:6%">
+						<h1 class="display-3">
+							Welcome
+						</h1>
+						<hr class="m-y-2">
+						<p class="lead">
+							It looks like you don't have any valid deals in your Pouch. 
+							<br>
+							<br>
+							Keep an eye out for the "Save to Pouch" button in emails & social media posts from your favorite brands!
+						</p>
+						
+						
+					</div>
+
+		<% else %>
+		<div class="row ">
+
+			<% @data.each do |data| %>
+			
+			<div class="col-lg-4" style="display: inline-block">
+				<br>
+				
+
+				<div class="jumbotron" style="margin-top:0%; margin-bottom:0%; padding-bottom:5%; padding-top:5%" >
+					<div class="card" text-align:"center">
+						<center>
+							<img class="card-img-top" src="<%= data.brand_image.url(:medium) %>" alt="image is broken" align:"center" width="75%" style="margin-top: 5%; margin-right: 5%; margin-left: 5%; margin-bottom: 5%">
+						</center>
+						<hr style="margin-top:0%; margin-bottom:0%">
+						<div class="card-block" style="padding-bottom: 2%; padding-top: 2%">
+							<h2 class="lead text-xs-center" style="padding-bottom: 0%; margin-bottom: 0%; font-size: 1.66em" >
+								<%= data.campaign.campaign_name %>
+								<% unless data.campaign.description.blank? %>
+									<script type="text/javascript">
+									$(function () {
+										$('[data-toggle="tooltip"]').tooltip()
+									})
+									</script>
+									<span style="font-size: .5em"
+									data-toggle="tooltip" data-placement="top" title="<%= data.campaign.description %>">
+										<i class="fa fa-info-circle" aria-hidden="true"></i>
+									</span>
+								<% end %>
+								<div class="text-muted" style="font-size: .6em; padding-top:0%">
+									Expires
+									<% if data.user.time_zone %>
+										<%= data.campaign.expiration_date.in_time_zone(data.time_zone).strftime("%b %d at ") + data.campaign.expiration_date.in_time_zone(data.time_zone).strftime("%l:%M%P %Z").strip %>
+									<% else %>
+										<%= data.campaign.expiration_date.in_time_zone(data.campaign.time_zone).strftime("%b %d at ") + data.campaign.expiration_date.in_time_zone(data.campaign.time_zone).strftime("%l:%M%P %Z").strip %>
+									<% end %>
+								</div>
+							</h2>
+						</div>
+					</div>
+					<center>
+						<% if data.campaign.promo_code.blank? %>
+						<a href="<%= data.campaign.campaign_url %>" align="center" class="btn btn-primary", style="padding-left:65px;padding-right:65px;margin-top:0%; padding-top:17px; padding-bottom: 17px" target="_blank">
+							Shop Now
+						</a>
+						<% else %>
+
+
+						<!-- begin modal  -->
+
+						<!-- Button trigger modal -->
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#<%= data.id %>" id='<%= data.campaign.id %>' data-clipboard-text='<%= data.campaign.promo_code %>' style='padding-left: 35px; padding-right:35px; padding-top: 7px; padding-bottom: 7px' >
+							Shop promo code
+							<br>
+							"<%= data.campaign.promo_code %>"
+						</button>
+						<script>
+						$(document).ready(function() {
+							var clip = new ZeroClipboard($("#<%= data.campaign.id %>"))
+						});  
+						</script>
+
+
+						<!-- Modal -->
+						<div class="modal fade" id="<%= data.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">
+												&times;
+											</span>
+										</button>
+
+									</div>
+									<div class="lead text-xs-center">
+										<br>
+										Copy promo code
+										<br>
+										<textarea rows="1" cols="<%= data.campaign.promo_code.length %>" readonly style="margin-top:10px;resize: none"><%= data.campaign.promo_code %></textarea>
+										<br>
+										then continue shopping
+										<br><br>
+									</div>
+									<div class="modal-footer">
+										<a href="<%= data.campaign.campaign_url %>" class="btn btn-primary"  target="_blank" role="button" id='<%= data.campaign.id %>' data-clipboard-text='<%= data.campaign.promo_code %>'>
+											Continue Shopping
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- end of modal  -->
+						<br>
+						<% end %>
+						<!-- end of button logic -->
+					</center>
+				</div>
+				
+			</div>
+			<% end %>
+		</div>
+		<% end %>
+	</div>
+</span>
+
+
+
+<!-- If user is not logged in -->
+<% else %>
+<body  style="background-color: #EDEDED ">
+
+<div class="container" style="padding-bottom: 10%; margin-top: 2.5%">
+	<div class="row">
+		<div class="col-md-2" align="center">
+		</div>
+		<div class="col-md-8" align="center">
+			
+			<%= image_tag 'pouch-horizontal.png', width: "47%", :alt => 'Pouch Logo'%>
+			<hr style="margin-top:1%; margin-bottom:0%">
+		</div>
+		<div class="col-md-2" align="center">
+		</div>
+	</div>
+	<div class="row" >
+		<div class="col-md-2" align="center">
+		</div>
+		<div class="col-md-4" align="center" style="margin-top:4.25%" >
+			<h1 class="display-4" style="font-size: 2em; text-align: center; margin-bottom: 0%">
+				Never forget a deal
+			</h1>
+			
+			<p class="lead text-justify" style=" font-size: 1.1em; margin-bottom:3%; margin-right:4%; margin-left: 4%; margin-top: 5%" >
+				Keep tabs on your favorite brands with Pouch - a safe place to save, organize, and shop all of the offers you find in emails and across the web. 
+			</p>
+			<p class="lead text-justify" style=" font-size: 1.1em; margin-bottom:6.5%; margin-right:4%; margin-left: 4%">
+				Your Pouch will even remind you when sales & promo codes are about to expire, to help support that <i>healthy </i> shopping habit of yours.
+			</p>
+
+			<%= link_to "Sign Up", "/users/registrations/email", id: "sign_up", class: "btn btn-success", style: "font-size: 1em; margin-top:1%;"%> 
+			<%= link_to "Log In", "/users/sessions/email", id: "sign_up", class: "btn btn-primary", style: "font-size: 1em; padding-left: 24px; padding-right: 24px; margin-top:1%; "%>
+			<div style="margin-top:2%">
+				<%= link_to image_tag("app_store_badge.svg", height: '55', alt: "image is broken"), "https://itunes.apple.com/us/app/pouch!/id1129131870", id: "app_download", target: "_blank" %>
+			</div>
+		</div>
+		
+		<div class="col-md-4" align="center" style="margin-top:0%" >
+			
+			<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+				<ol class="carousel-indicators">
+					<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+					<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+					<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+				</ol>
+				<div class="carousel-inner" role="listbox">
+					<div class="carousel-item active">
+						<div style="margin-bottom:9%" >
+							<%= image_tag 'iphone-black.png', width: "80%", :alt => 'image is broken'%>
+						</div>
+					</div>
+					<div class="carousel-item">
+						<div style="margin-bottom:9%" >
+							<%= image_tag 'iphone-black-2.png', width: "80%", :alt => 'image is broken'%>
+						</div>
+					</div>
+					<div class="carousel-item">
+						<div style="margin-bottom:9%" >
+							<%= image_tag 'iphone-black-3.png', width: "80%", :alt => 'image is broken'%>
+						</div>
+					</div>
+				</div>
+				<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev" style="background-image:none; filter: progid:none">
+					<span class="icon-prev" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next" style="background-image:none; filter: progid:none">
+					<span class="icon-next" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+
+
+
+
+
+
+
+		</div>
+		<div class="col-md-2" align="center" style="margin-top:4%" >
+			
+		</div>
+
+	</div>
+</div>
+
+<% end %>	
+
+
+
+</body>

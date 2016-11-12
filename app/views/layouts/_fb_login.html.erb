@@ -1,0 +1,30 @@
+<div class="container">
+  <% if current_user %>
+    Signed in as <strong><%= current_user.user_name %></strong>!
+    <%= link_to "Sign out", destroy_user_sessions_path, id: "sign_out" %>
+  <% else %>
+    <%= link_to image_tag("facebook-login.png", height: "55"), "/sessions/url", id: "sign_in"%>
+
+            <!-- replaced this code with the code above so facebook image is used <%= link_to "Sign in with Facebook", "/sessions/url", id: "sign_in" %>
+            -->
+            <!-- replaced this code with the above so I can redirect to the previous page
+              <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %>
+            -->
+  <% end %>
+  <br>
+</div>
+        <div class="container-fluid" style="height: 35px;line-height: 30px">
+    <div class="row" style="padding-top: 0px; background-color: #EDEDED">
+      <div class="col-md-3" align="center">
+    
+      </div>
+      <div class="col-md-6" align="center" vertical-align="middle" text-align="center">
+        <%= image_tag 'pouch-horizontal.png', :alt => 'image is broken', height: 55 %>
+
+      </div>
+      <div class="col-md-3" align="right" style="padding-top:10px;padding-right:50px" vertical-align="middle" >
+        <a class="nav-link" href="#">About</a>
+      </div>
+      </div>
+      
+        

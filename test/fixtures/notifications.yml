@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  campaign_id: 1
+  send_date: 2016-07-10 15:06:04
+  scheduled: false
+
+two:
+  user_id: 1
+  campaign_id: 1
+  send_date: 2016-07-10 15:06:04
+  scheduled: false

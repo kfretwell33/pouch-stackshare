@@ -1,0 +1,46 @@
+@user.id:   <%= @user.id %><br>
+@user.provider:   <%= @user.provider %><br>
+@user.uid:   <%= @user.uid %><br>
+@user.oauth_token:   <%= @user.oauth_token %><br>
+@user.oauth_expires_at:   <%= @user.oauth_expires_at %><br>
+@user.user_name:   <%= @user.user_name %><br>
+
+<br><br><br>
+<%= link_to "test", api_path(@user.id) %>
+<%= link_to "test", api_url(@user.id) %>
+<%= link_to "test", api_url(@user.id) %>
+<div class="table">
+		<table class="table">                        
+			<tr>                          
+				<th><center>Logo</center></th>
+				<th><center>Deal</center></th>
+				<th><center>Expiration Date</center></th>
+				<th><center>Display?</center></th>
+				<th><center>Hide?</center></th>
+				<th><center>See Details</center></th>
+				
+			</tr>
+			<% @data.each do |data| %>
+			<tr>
+				<td><center>
+					<!-- allowed to use "data.brand_image" because of delegates in deals model which equates it to "data.campaign.brand.brand_image" -->
+					<%= image_tag data.brand_image.url(:thumb), :alt => 'image is broken' %>
+				</center></td>
+				<td><center>
+					<!-- using campaign name from campaign table, not deals table (would have name conflicts because you named all the duplicate fields the same thing across tables, if you delete duplicate columns b/c you don't end up needing them in swift, you can remove the ".campaign." & just have it be "data.xyz" -->	
+					<%= link_to data.campaign.campaign_name, data.campaign.campaign_url, id: "shop_now", target: "_blank"%>
+				</center></td>
+				<td><center>
+					<!-- using campaign name from campaign table, not deals table (would have name conflicts because you named all the duplicate fields the same thing across tables, if you delete duplicate columns b/c you don't end up needing them in swift, you can remove the ".campaign." & just have it be "data.xyz" -->
+					<%= data.campaign.expiration_date.ctime %>
+				</center></td>
+				<td><center><%= data.display %></center></td>
+				<td><center><%= button_to "Hide", data, method: :put, data: { confirm: 'Are you sure? You can not undo this actiong' }, class: "btn btn-primary" %></center></td>
+				<td> <center><%= link_to "See Details", data, id: "deals_page" %> </center></td>
+				
+
+			</tr>
+			<% end %>
+		</table>
+	</div>
+

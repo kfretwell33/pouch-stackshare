@@ -1,0 +1,91 @@
+<center>
+	<% if @row_exists %>
+	<span STYLE="font-family: 'Helvetica-Light'">
+		<br>
+		<h5>
+			<i>
+				You already have this deal in your Pouch!
+			</i>
+		</h5>
+		<br>
+		<!-- allowed to use "@campaign.brand_image" because of delegate in campaign model which equates it to "@campaign.brand.brand_image" -->
+		<%= image_tag @campaign.brand_image.url(:medium), :alt => 'image is broken' %>
+		<br>
+		<h2>
+			<%= @campaign.campaign_name %>
+		</h2>
+		<!-- <h2> Use Code: <%= @campaign.promo_code %> </h2> -->
+		<h5>
+			Expires <%= @campaign.expiration_date.strftime("%m/%d/%Y") %>
+		</h5>
+		<%= link_to "Shop Now", @campaign.campaign_url, id: "pouch_shop_now", target: "_blank", class: "btn btn-primary btn-lg"%>
+		<br>
+		<br>
+		
+	</center>
+	<% else %>	
+	<br>
+	<h5>
+		<i>
+			Congrats, this deal has been added to your Pouch!
+		</i>
+	</h5>
+	<br>
+	<!-- allowed to use "@campaign.brand_image" because of delegate in campaign model which equates it to "@campaign.brand.brand_image" -->
+	<%= image_tag @campaign.brand_image.url(:medium), :alt => 'image is broken' %>
+	<br>
+	<h2>
+		<%= @campaign.campaign_name %>
+	</h2>
+	<!-- <h2> Use Code: <%= @campaign.promo_code %> </h2> -->
+	<h5>
+		Expires <%= @campaign.expiration_date.strftime("%m/%d/%Y") %>
+	</h5>
+	<%= link_to "Shop Now", @campaign.campaign_url, id: "pouch_shop_now", target: "_blank", class: "btn btn-primary btn-lg"%>
+	<br>
+	<br>
+	
+</center>
+</span>
+<% end %> 
+
+
+
+
+
+
+
+
+
+
+<br>
+		<h5>
+			<i>
+				Please login to add this deal to your Pouch!
+			</i>
+		</h5>
+		<br>
+		<!-- allowed to use "@campaign.brand_image" because of delegate in campaign model which equates it to "@campaign.brand.brand_image" -->
+		<%= image_tag @campaign.brand_image.url(:medium), :alt => 'image is broken' %>
+		<br>
+		<h2>
+			<%= @campaign.campaign_name %>
+		</h2>
+		<!-- <h2> Use Code: <%= @campaign.promo_code %> </h2> -->
+		<h5>
+			Expires <%= @campaign.expiration_date.strftime("%m/%d/%Y") %>
+		</h5>
+		<%= link_to "Shop Now", @campaign.campaign_url, id: "pouch_shop_now", target: "_blank", class: "btn btn-primary btn-lg"%>
+		<br>
+		<br>
+		
+	</center>
+				
+			<% end %>		
+		
+		<% else %>
+			<% if current_user %>
+				<h3>Although you're logged in, this deal is expired and can't be added to your Pouch. Sorry!</h3>
+			<% else %>
+				<h3>You aren't logged in and this deal is expired --> It can't be added to your Pouch! Sorry!</h3>
+</center>

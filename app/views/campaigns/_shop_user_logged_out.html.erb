@@ -1,0 +1,8 @@
+<% if Time.now < @campaign.expiration_date %>
+	<h2>
+		<%= link_to @campaign.banner_text, pouch_campaign_path(@campaign.id), id: "save_to_pouch_from_campaigns/shop", class: "btn btn-primary btn-lg btn-block", style: "white-space: normal; word-wrap: break-word"%>
+	</h2>
+<% else %>
+	<h2>
+		<%= link_to "This deal has expired", pouch_campaign_path(@campaign.id), id: "save_to_pouch_from_campaigns/shop", class: "btn btn-primary btn-lg btn-block disabled", style: "white-space: normal; word-wrap: break-word"%>	</h2>
+<% end %>

@@ -1,0 +1,66 @@
+<!-- Header info -->
+<% content_for :head do %>
+
+<title><%= @campaign.campaign_name %></title>
+<meta property="og:url" content="<%= @pouch_url %>" />
+<meta property="og:type" content="website" />
+<meta property="fb:app_id" content="760928777377694" />
+<meta property="og:title" content="<%= @campaign.campaign_name %>" />
+<meta property="og:description" content="<%= @campaign.fb_description %>" />
+<meta property="og:site_name" content="<%= @campaign.brand.brand_name %>" />
+<!-- set up fb image share photo -->
+<% if @campaign.fb_image_file_name %>
+<meta property="og:image" content="<%= @campaign.fb_image.url %>" />
+<% else %>
+<meta property="og:image" content="<%= @campaign.brand_image.url %>" />
+<% end %>
+
+<% end %>
+<!-- End of header info -->
+
+
+<body  style="background-color: #E0E0E0 ">
+	<nav class="navbar navbar-light" style="background-color: #EDEDED;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand">
+
+				</a>
+
+				<div align="center" style="padding-left:0%;margin-right:0%">
+					<%= link_to image_tag("pouch-horizontal.png", height: "35"), "/", id: "home_page"%>
+
+				</div>
+			</div><!-- /.navbar-collapse -->
+		</div>
+	</nav>
+	
+		<!-- <h1> POUCH PAGE </h1> -->
+	
+		<% if current_user %>
+			<%= render 'campaigns/pouch_user_current' %>
+		<% else %>
+			<%= render 'campaigns/pouch_user_logged_out' %>		
+		<% end %>
+	
+	
+
+<!--
+				<% if @row_exists %>
+					<h3>Conrats, you've already Pouched this deal!</h3>
+				<% else %>	
+					<center><h2><u> Congrats! you've Pouched the following deal:</u><br><br></h2>
+					-->
+					<!-- allowed to use "@campaign.brand_image" because of delegate in campaign model which equates it to "@campaign.brand.brand_image" -->
+<!--
+					<%= image_tag @campaign.brand_image.url(:medium), :alt => 'image is broken' %>
+					
+					<h2><%= @campaign.campaign_name %></h2>
+					<h2>Expires <%= @campaign.expiration_date.strftime("%m/%d/%Y") %></h2><br>
+					<%= link_to "Shop Now", @campaign_url, id: "pouch_shop_now", target: "_blank", class: "btn btn-primary"%>
+					</center>
+				<% end %> 
+			-->
+
+
+</body>

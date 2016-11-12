@@ -1,0 +1,83 @@
+<% content_for :head do %>
+
+<title><%= @deal.campaign_name %></title>
+<meta property="og:description" content="<%= @deal.campaign.fb_description %>" />
+<% end %>
+
+<body  style="background-color: #D3D3D3 ">
+
+	<% if current_user %>
+	
+	<nav class="navbar navbar-light" style="background-color: #EDEDED;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand">
+
+				</a>
+
+				<div align="center" style="padding-left:25px;margin-left:25px">
+					<%= link_to image_tag("pouch-horizontal.png", height: "35"), "/", id: "home_page"%>
+
+					<form class="form-inline pull-xs-right">
+						<ul class="nav navbar-nav">
+							<li class="nav-item pull-*-right active">
+								<%= link_to "Sign out", signout_path, id: "sign_out", class: "nav-link" %>
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div><!-- /.navbar-collapse -->
+		</div>
+	</nav>
+	<span STYLE="font-family: 'Helvetica-Light'">
+	<div class="container" style="padding-bottom: 60px;">
+		<div class="row">
+			<div class="col-lg-2">
+				
+			</div>
+			
+			<div class="col-lg-8">
+				<br>
+				<div class="card" text-align:"center">
+					<center>
+						<img class="card-img-top" src="<%= @deal.brand_image.url(:medium) %>" alt="image is broken" align:"center">
+						<div class="card-block text-xs-center" >
+							<h2 class="card-title" >
+								<%= @deal.campaign.campaign_name %>
+							</h2>
+							<p class="card-text">
+								<h4>
+									<% if @deal.user.time_zone %>
+									<%= @deal.campaign.expiration_date.in_time_zone(@deal.time_zone).strftime("%b %d at ") + @deal.campaign.expiration_date.in_time_zone(@deal.time_zone).strftime("%l:%M%P %Z").strip %>
+									<% else %>
+									<%= @deal.campaign.expiration_date.in_time_zone(@deal.campaign.time_zone).strftime("%b %d at ") + @deal.campaign.expiration_date.in_time_zone(@deal.campaign.time_zone).strftime("%l:%M%P %Z").strip %>
+									<% end %>
+								</h4>
+								<h4>
+									<% if @deal.campaign.description %>
+									<i>
+										<%= @deal.campaign.description %>
+									</i>
+									<% end %>
+								</h4>
+								<% if @deal.campaign.promo_code == "" || @deal.campaign.promo_code == nil %>
+								<a href="<%= @deal.campaign.campaign_url %>" align="center" class="btn btn-lg btn-primary", style="padding-left:70px;padding-right:70px;margin-top:10px" target="_blank">
+									Shop Now
+								</a>
+								<% else %>
+								<a href="<%= @deal.campaign.campaign_url %>" align="center" class="btn btn-lg btn-primary", style="padding-left:70px;padding-right:70px;margin-top:10px", target="_blank">
+									Shop promo code "<%= @deal.campaign.promo_code %>"
+								</a>
+								<br>
+								<% end %>
+							</div>
+						</center>
+					</div>
+				</div>
+				<div class="col-lg-2">	
+				</div>
+			</div>
+		</div>
+	</span>
+		<% end %>
+	</body>

@@ -1,0 +1,122 @@
+<% content_for :head do %>
+
+<title>New Campaign</title>
+<meta property="og:description" content="Track all Pouch campaigns" />
+<% end %>
+
+
+
+<body>
+
+
+	<div class="container" style="padding-bottom: 6%; padding-top: 2%">
+		<div class="row">
+			<div class="col-lg-3">
+			</div>
+			<div class="col-lg-6">
+
+				<% if brand_signed_in? %>
+				<center>
+					<h1 class="display-4">
+						New Campaign
+					</h1>
+				</center>
+				<br>
+				
+				<%= simple_form_for (@campaign) do |f| %>
+				<%= f.error_notification %>
+				
+				<h2>
+					Basic Info
+				</h2>
+				<hr>
+
+
+
+				<%= f.input :campaign_name, label: "Campaign Name", error: "Campaign Name is mandatory, please specify one", error_html: {class: "text-danger"} %>
+
+
+				<%= f.input :campaign_url, as: :url, label: "Campaign URL", error: "Campaign URL is mandatory, please specify one", hint: "Must begin with 'http://' or 'https://'", error_html: {class: "text-danger"}, hint_html: {class: "small text-muted"} %>
+
+
+				<%= f.input :expiration_date, as: :datetime, label: "Expiration Date", hint: "Time in " + Time.now.in_time_zone(current_brand.time_zone).strftime("%Z"), error: "Expiration Date is mandatory, please specify one", error_html: {class: "text-danger"}, hint_html: {class: "small text-muted"}, input_html: {class: "c-select"} %>
+
+
+				<%= f.input :description, label: "Description" %>
+
+
+				<%= f.input :promo_code, label: "Promotion Code" %>
+
+
+				<%= f.input :banner_text, label: "Banner Text", hint_html: {class: "small text-muted"}, hint: raw("Customizes the banner text above your site when sharing Pouch links on social media (or elsewhere) #{link_to 'Example', 'http://bit.ly/2akwwH7', id: 'banner_example', target: '_blank'}") %>
+				<br>
+				
+				<h2>
+					Push Notifications 
+				</h2>
+				<hr>
+
+
+
+				<%= f.input :alert_one, label: "Message 1" %>
+				
+
+				<%= f.input :send_date_one, as: :datetime, label: "Message 1 Send Date", input_html: {class: "c-select"}, hint: "Regardless of a user's time zone, they will receive the Push Notification at this exact time", hint_html: {class: "small text-muted"}%>
+				
+
+				<%= f.input :alert_two, label: "Message 2" %>
+				
+
+				<%= f.input :send_date_two, as: :datetime, label: "Message 2 Send Date", hint: "Regardless of a user's time zone, they will receive the Push Notification at this exact time", hint_html: {class: "small text-muted"} %>
+				
+
+				<br>
+				<h2>
+					Facebook Sharing
+
+					<!-- initialize JS for tooltip popover stying -->
+					<script type="text/javascript">
+					$(function () {
+						$('[data-toggle="tooltip"]').tooltip()
+					})
+					</script>
+					<span
+					data-toggle="tooltip" data-placement="right" title="Only applies to organic posts. These fields can be customized for paid posts in Facebook Ad Manager." style="font-size:.66em">	
+					<i class="fa fa-info-circle" aria-hidden="true"></i>
+
+					</span>
+				</h2>
+				<hr>
+
+
+			<%= f.input :fb_description, label: "Facebook Description" %>
+
+			Facebook Picture<br>
+			<%= f.file_field :fb_image, as: :file %>
+			<small class="text-muted">
+				<br>
+				Use images that are at least 1200 x 630 pixels for the best display on high resolution devices. At the minimum, you should use images that are 600 x 315 pixels. Images can be up to 8MB in size & should stay close to a 1.91:1 aspect ratio to avoid cropping.
+				<br>
+				More info at <a href="https://developers.facebook.com/docs/sharing/best-practices#images" target="_blank">Facebook Image Sharing Best Practices </a>
+				<hr>
+			</small>
+
+			
+			<br>
+
+			
+			<%= f.button :submit, class: "btn btn-primary btn-lg"%>
+			
+
+
+			<% end %>
+			<% else %>
+			Please login to create a campaign
+			<% end %>
+
+		</div>
+		<div class="col-lg-3">
+		</div>
+	</div>
+</div>
+</body>

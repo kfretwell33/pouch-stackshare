@@ -1,0 +1,255 @@
+<% content_for :head do %>
+
+<title>Campaign Tracking</title>
+<meta property="og:description" content="Track all Pouch campaigns" />
+<script src="sorttable.js"></script>
+<% end %>
+
+<body>
+	
+	<div class="container" style="padding-bottom: 6%;padding-top:2%">
+		<div class="row">
+			<div class="col-sm-2">
+			</div>
+
+			<div class="col-lg-8">
+				<% if current_brand %>
+				
+				<br>
+				<% if @tracking == [] && @tracking_expired == [] %>
+				<div style="padding-top:6%">
+					<div class="jumbotron" style="padding-top:6%;padding-bottom:6%">
+						<h1 class="display-3">
+							Welcome to Pouch!
+						</h1>
+						<p class="lead">
+							It looks like you haven't created any campaigns yet! 
+						</p>
+						<hr class="m-y-2">
+						<p>
+							Let's get started on your first campaign
+						</p>
+						
+						<a class="btn btn-primary btn-lg" href="/campaigns/new" role="button">
+							Create Campaign
+						</a>
+						
+					</div>
+
+				</div>
+				
+				<% else %>
+
+				<center>
+					<h1 class="display-4">
+						Campaigns
+					</h1>
+				</center>
+
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#active" role="tab">
+							Active
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#expired" role="tab">
+							Expired
+						</a>
+					</li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+					
+
+					<div class="table-responsive tab-pane active" role="tabpanel" id="active">
+					<% if @tracking == [] %>
+						<!-- Jumbotron if a brand only has expired campaigns -->
+						<div style="padding-top:6%">
+							<div class="jumbotron" style="padding-top:6%;padding-bottom:6%">
+								
+								<p class="lead">
+									It looks like you don't have any active campaigns 
+								</p>
+								<hr class="m-y-2">
+								<a class="btn btn-primary btn-lg" href="/campaigns/new" role="button">
+									Create Campaign
+								</a>	
+							</div>
+						</div>
+						<!-- end of Jumbotron if a brand only has expired campaigns -->
+					<% else %>
+						<table class="table sortable" >                    
+							<tr>                          
+								<td> 	
+									<span class="lead">	
+										Campaign
+									</span>
+								</td>
+								<td class="sorttable_mmdd">
+									<span class="lead">	
+										End Date
+									</span>
+								</td>
+								<td class="sorttable_numeric" align="right"> 
+									<!-- initialize JS for tooltip popover stying -->
+									<script type="text/javascript">
+									$(function () {
+										$('[data-toggle="tooltip"]').tooltip()
+									})
+									</script>
+									<span class="lead"
+									data-toggle="tooltip" data-placement="bottom" title="Days from campaign creation to expiration">	
+									Length
+								</span>
+
+							</td>
+							
+							<td align="right"> 
+								<span class="lead">	
+									Saved Deals
+								</span>
+							</td>
+
+						</tr>
+						<% @tracking.each do |tracking| %>
+						<tr>
+							<td> 
+
+								<%= link_to tracking.campaign_name, campaign_path(tracking.id), id: "analytics_page", target: "_blank" %>
+
+							</td>
+							<td sorttable_customkey="<%= tracking.expiration_date.in_time_zone(tracking.time_zone).strftime("%m/%d/%Y")
+							%>"> 
+							<% if Time.now < tracking.expiration_date %>
+							<div class="text-success">
+
+								<%= tracking.expiration_date.in_time_zone(tracking.time_zone).strftime("%B %d")
+								%>
+							</div>
+							<% else %>
+							<div class="text-danger">
+								
+								<%= tracking.expiration_date.in_time_zone(tracking.time_zone).strftime("%B %d")
+								%>
+							</div>
+							<% end %>
+						</td>
+						<td>
+							<div class="text-xs-right">	
+								<%= ((-1 * (tracking.created_at - tracking.expiration_date) / 60 / 60 / 24).floor) %> days
+							</div>
+
+						</td>
+						<td>
+							<div class="text-xs-right">	
+								<%= tracking.deals(true).size %> 
+							</div>
+						</td>
+						</tr>
+						<% end %>
+						</table>
+					<% end %> <!-- closes out if/then logic if a brand only has expired campaigns -->
+				</div><!-- ends div for active table -->
+			<!-- begin div for expired table -->
+			<div class="tab-pane" id="expired" role="tabpanel">
+				<% if @tracking_expired == [] %>
+				<!-- Jumbotron if a brand doesn't have expired campaigns -->
+						<div style="padding-top:6%">
+							<div class="jumbotron" style="padding-top:6%;padding-bottom:3%">
+								
+								<p class="lead">
+									It looks like you don't have any expired campaigns 
+								</p>
+								<hr class="m-y-2">
+									
+							</div>
+						</div>
+						<!-- end of Jumbotron if a brand doesn't have expired campaigns -->
+				<% else %>
+
+				<table class="table sortable" >                    
+					<tr>                          
+						<td> 	
+							<span class="lead">	
+								Campaign
+							</span>
+						</td>
+						<td class="sorttable_mmdd">
+							<span class="lead">	
+								End Date
+							</span>
+						</td>
+						<td class="sorttable_numeric" align="right"> 
+							<!-- initialize JS for tooltip popover stying -->
+							<script type="text/javascript">
+							$(function () {
+								$('[data-toggle="tooltip"]').tooltip()
+							})
+							</script>
+							<span class="lead"
+							data-toggle="tooltip" data-placement="bottom" title="Days from campaign creation to expiration">	
+							Length
+						</span>
+
+					</td>
+
+					<td align="right"> 
+						<span class="lead">	
+							Saved Deals
+						</span>
+					</td>
+
+				</tr>
+				<% @tracking_expired.each do |tracking| %>
+				<tr>
+					<td> 
+
+						<%= link_to tracking.campaign_name, campaign_path(tracking.id), id: "analytics_page", target: "_blank" %>
+
+					</td>
+					<td sorttable_customkey="<%= tracking.expiration_date.in_time_zone(tracking.time_zone).strftime("%m/%d/%Y")
+					%>"> 
+					<% if Time.now < tracking.expiration_date %>
+					<div class="text-success">
+
+						<%= tracking.expiration_date.in_time_zone(tracking.time_zone).strftime("%B %d")
+						%>
+					</div>
+					<% else %>
+					<div class="text-danger">
+
+						<%= tracking.expiration_date.in_time_zone(tracking.time_zone).strftime("%B %d")
+						%>
+					</div>
+					<% end %>
+					</td>
+					<td>
+					<div class="text-xs-right">	
+						<%= ((-1 * (tracking.created_at - tracking.expiration_date) / 60 / 60 / 24).floor) %> days
+					</div>
+
+					</td>
+					<td>
+					<div class="text-xs-right">	
+						<%= tracking.deals(true).size %> 
+					</div>
+					</td>
+					</tr>
+				<% end %>
+			</table>
+			<% end %>
+		</div>
+	</div><!-- ends div for active/expired tab displays -->
+	<% end %> <!-- ends logic for "new campaign button" -->
+	<% end %> <!-- ends logic for "current_brand" -->
+</div> <!-- ends div for middle column that is 8 units wide -->
+
+<div class="col-sm-2">
+</div>
+</div>
+</div>
+
+</body>
